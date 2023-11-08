@@ -18,6 +18,7 @@
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = [
+    pkgs.lazygit
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
     # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
@@ -29,6 +30,7 @@
     # # environment:
     # (pkgs.writeShellScriptBin "my-hello" ''
     #   echo "Hello, ${config.home.username}!"
+
     # '')
   ];
 
@@ -58,7 +60,6 @@
   #
   # if you don't want to manage your shell through Home Manager.
   home.sessionVariables = {
-    EDITOR = "nvim";
   };
   # ZSH
   programs = {
@@ -76,6 +77,7 @@
     };
     neovim = {
       enable = true;
+      defaultEditor = true;
       vimAlias = true;
       extraPackages = with pkgs; [
         tree-sitter
@@ -83,16 +85,21 @@
         nil
       ];
       plugins = with pkgs.vimPlugins; [
-        rose-pine
+        sensible
+        { 
+	  plugin = rose-pine;
+	  type = "lua";
+	  config = builtins.readFile(./nvim/plugins/rose-pine.lua);
+	}
         nvim-treesitter.withAllGrammars
-        nvim-lspconfig
+        { 
+	  plugin = nvim-lspconfig;
+	  type = "lua";
+	  config = builtins.readFile(./nvim/plugins/lsp.lua);
+	}
         which-key-nvim
       ];
-      extraLuaConfig = /* lua */''
-        		  vim.cmd('colorscheme rose-pine')
-        		  local lsp = require'lspconfig'
-        		  lsp.nil_ls.setup{}
-        		'';
+      extraLuaConfig = builtins.readFile(./nvim/init.lua);
     };
     home-manager = {
       enable = true;
