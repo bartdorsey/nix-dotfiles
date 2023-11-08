@@ -6,22 +6,23 @@
 
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [
+      # Include the results of the hardware scan.
       ./hardware-configuration.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.initrd.kernelModules = ["hv_vmbus" "hv_storvsc"];
+  boot.initrd.kernelModules = [ "hv_vmbus" "hv_storvsc" ];
 
-  boot.kernelParams = ["video=hyperv_fb:1920x1080"];
+  boot.kernelParams = [ "video=hyperv_fb:1920x1080" ];
   boot.kernel.sysctl."vm.overcommit.memory" = "1";
 
   networking.hostName = "nixos-vm"; # Define your hostname.
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+  networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
 
   # Set your time zone.
   time.timeZone = "US/Central";
@@ -43,8 +44,8 @@
   services.xserver.autorun = true;
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.plasma5.enable = true;
-  services.xserver = { modules = [pkgs.xorg.xf86videofbdev ]; videoDrivers = ["hyperv_fb"]; };
-  
+  services.xserver = { modules = [ pkgs.xorg.xf86videofbdev ]; videoDrivers = [ "hyperv_fb" ]; };
+
 
   # Configure keymap in X11
   services.xserver.layout = "us";
@@ -61,40 +62,40 @@
   # services.xserver.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-   users.users.echo = {
-     isNormalUser = true;
-     shell = "${pkgs.zsh}/bin/zsh";
-     initialPassword = "CarlSaganPaleBlueDot";
-     extraGroups = [ "wheel" "video" ]; # Enable ‘sudo’ for the user.
-     packages = with pkgs; [
-       neovim
-       wget
-       git
-       tree
-     ];
-   };
+  users.users.echo = {
+    isNormalUser = true;
+    shell = "${pkgs.zsh}/bin/zsh";
+    initialPassword = "CarlSaganPaleBlueDot";
+    extraGroups = [ "wheel" "video" ]; # Enable ‘sudo’ for the user.
+    packages = with pkgs; [
+      neovim
+      wget
+      git
+      tree
+    ];
+  };
 
-  users.users.gdm = { extraGroups = ["video"];};
- 
+  users.users.gdm = { extraGroups = [ "video" ]; };
+
   nixpkgs.config.allowUnfree = true;
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-     wget
-     xorg.xinit
-     konsole
-     wezterm
-     firefox
-     zsh
-   ];
+    vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    wget
+    xorg.xinit
+    konsole
+    wezterm
+    firefox
+    zsh
+  ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
   programs.gnupg.agent = {
-     enable = true;
-     enableSSHSupport = true;
+    enable = true;
+    enableSSHSupport = true;
   };
 
   # List services that you want to enable:
@@ -120,7 +121,7 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "23.05"; # Did you read the comment?
- 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];  
+
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 }
 

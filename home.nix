@@ -62,41 +62,41 @@
   };
   # ZSH
   programs = {
-  	zsh = {
-	  enable = true;
-	  dotDir = ".config/zsh";
-	  };
-         starship = {
-	 	enable = true;
-  		enableZshIntegration = true;
-	};
-	lsd = {
-		enable = true;
-		enableAliases = true;
-	};
-        neovim = {
-		enable = true;
-                vimAlias = true;
-                extraPackages = with pkgs; [
-                  tree-sitter
-                  gcc
-		  nil
-                ];
-		plugins = with pkgs.vimPlugins; [
-		  rose-pine
-                  nvim-treesitter.withAllGrammars
-		  nvim-lspconfig
-                  which-key-nvim
-		];
-		extraLuaConfig = /* lua */''
-		  vim.cmd('colorscheme rose-pine')
-		  local lsp = require'lspconfig'
-		  lsp.nil_ls.setup{}
-		'';
-	};
-        home-manager = {
-		enable = true; 
-	};
+    zsh = {
+      enable = true;
+      dotDir = ".config/zsh";
     };
+    starship = {
+      enable = true;
+      enableZshIntegration = true;
+    };
+    lsd = {
+      enable = true;
+      enableAliases = true;
+    };
+    neovim = {
+      enable = true;
+      vimAlias = true;
+      extraPackages = with pkgs; [
+        tree-sitter
+        gcc
+        nil
+      ];
+      plugins = with pkgs.vimPlugins; [
+        rose-pine
+        nvim-treesitter.withAllGrammars
+        nvim-lspconfig
+        which-key-nvim
+      ];
+      extraLuaConfig = /* lua */''
+        		  vim.cmd('colorscheme rose-pine')
+        		  local lsp = require'lspconfig'
+        		  lsp.nil_ls.setup{}
+        		'';
+    };
+    home-manager = {
+      enable = true;
+    };
+  };
 }
 
